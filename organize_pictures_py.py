@@ -6,7 +6,7 @@ that have simple numeric names (like 1.jpg, 2.jpg, etc.) and organize
 them into folders based on the "Area" column.
 
 Required columns in Markdown table:
-- "Current File Name": The number of the file (with or without .jpg extension)
+- "Index": The number of the file (with or without .jpg extension)
 - "Suggested File Name": New filename
 - "Date": Optional date to add as metadata
 - "Tags": Optional tags to add as metadata  
@@ -93,7 +93,7 @@ def parse_markdown_table(file_path):
             header_map[norm_h] = h
         
         # Check required headers - using normalized format
-        required_headers = ["currentfilename", "suggestedfilename", "area"]
+        required_headers = ["index", "suggestedfilename", "area"]
         missing_headers = []
         
         for req_h in required_headers:
@@ -111,7 +111,7 @@ def parse_markdown_table(file_path):
             return None
         
         # Get indices of required headers
-        current_file_idx = headers.index("currentfilename")
+        current_file_idx = headers.index("index")
         suggested_file_idx = headers.index("suggestedfilename")
         area_idx = headers.index("area")
         
@@ -125,7 +125,7 @@ def parse_markdown_table(file_path):
             cells = [cell.strip() for cell in row.split('|') if cell]
             if len(cells) >= max(current_file_idx, suggested_file_idx, area_idx) + 1:
                 row_dict = {
-                    "Current File Name": cells[current_file_idx],
+                    "Index": cells[current_file_idx],
                     "Suggested File Name": cells[suggested_file_idx],
                     "Area": cells[area_idx]
                 }
@@ -185,7 +185,7 @@ def organize_pictures():
         for index, row in enumerate(file_data):
             try:
                 # Get values from markdown
-                current_file = str(row.get("Current File Name", "")).strip()
+                current_file = str(row.get("Index", "")).strip()
                 suggested_name = str(row.get("Suggested File Name", "")).strip()
                 area = str(row.get("Area", "")).strip()
                 
